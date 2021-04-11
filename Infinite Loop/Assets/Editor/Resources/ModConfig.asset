@@ -11,9 +11,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 615501dbe4f3fe94fbf4b564abb10237, type: 3}
   m_Name: ModConfig
   m_EditorClassIdentifier: 
-  id: template
-  title: Template
-  author: 
+  id: InfiniteLoop
+  title: Infinite Loop
+  author: me
   description: "The end is never the end is never the end is never the end.\r\n\r\nDecrypt
     a word flashing in morse code without any spaces.\n\nManual can be found at ktane.timwi.de\n\nIf
     there are any bugs, contact Fartlicker777#9169 on Discord."

@@ -204,7 +204,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1272514110000862
 GameObject:
   m_ObjectHideFlags: 0
@@ -1257,7 +1257,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1240676701029190}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.075167, y: 0.01986, z: 0.076057}
+  m_LocalPosition: {x: 0.063, y: -0.0107, z: 0.0627}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4386666791210728}
@@ -3451,19 +3451,19 @@ MonoBehaviour:
   Parent: {fileID: 114139553842080666}
   Children:
   - {fileID: 114535117559606358}
-  - {fileID: 114260339716001114}
   - {fileID: 114234251505594140}
-  - {fileID: 114144442702290318}
   - {fileID: 114704858207643574}
-  - {fileID: 114963952055694360}
   - {fileID: 114993073914886936}
-  - {fileID: 114105243174426402}
   - {fileID: 114876359399986800}
-  - {fileID: 114921174394806854}
   - {fileID: 114477034469319690}
+  - {fileID: 114260339716001114}
+  - {fileID: 114144442702290318}
+  - {fileID: 114963952055694360}
+  - {fileID: 114105243174426402}
+  - {fileID: 114921174394806854}
   - {fileID: 114742639703351798}
   IsPassThrough: 0
-  ChildRowLength: 0
+  ChildRowLength: 6
   Highlight: {fileID: 114570430299588062}
   SelectableColliders: []
   DefaultSelectableIndex: 0
@@ -4207,6 +4207,7 @@ MonoBehaviour:
   - {fileID: 114921174394806854}
   - {fileID: 114742639703351798}
   MorseLight: {fileID: 1041206276722364}
+  StatusLight: {fileID: 1240676701029190}
   MorseColors:
   - {fileID: 2100000, guid: c0b21f41643f08d47bc853672e4a4ec1, type: 2}
   - {fileID: 2100000, guid: f58792f3f2e306041a4abca01079a635, type: 2}

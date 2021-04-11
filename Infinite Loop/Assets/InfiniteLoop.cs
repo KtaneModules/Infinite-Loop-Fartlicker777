@@ -9,6 +9,7 @@ public class InfiniteLoop : MonoBehaviour {
    public KMAudio Audio;
    public KMSelectable[] Arrows;
    public GameObject MorseLight;
+   public GameObject StatusLight;
    public Material[] MorseColors;
    public TextMesh[] Letters;
    public GameObject[] Boxes;
@@ -16,11 +17,11 @@ public class InfiniteLoop : MonoBehaviour {
 
    int[] LetterIndexes = { 0, 0, 0, 0, 0, 0 };
 
-   readonly string[] WordList = { "anchor", "axions", "brutal", "bunker", "ceased", "cypher", "demote", "devoid", "ejects", "expend", "fixate", "fondly", "geyser", "guitar", "hexing", "hybrid", "incite", "inject", "jacked", "jigsaw", "kayaks", "komodo", "lazuli", "logjam", "maimed", "musket", "nebula", "nuking", "overdo", "oxides", "photon", "probed", "quartz", "quebec", "refute", "regime", "sierra", "swerve", "tenacy", "thymes", "ultima", "utopia", "valved", "viable", "wither", "wrench", "xenons", "xylose", "yanked", "yellow", "zigged", "zodiac" };
    readonly string[] MorseLetters = { ".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--.." };
-   readonly string alphabet = "abcdefghijklmnopqrstuvwxyz";
-   string SelectedWord = "";
+   readonly string[] WordList = { "anchor", "axions", "brutal", "bunker", "ceased", "cypher", "demote", "devoid", "ejects", "expend", "fixate", "fondly", "geyser", "guitar", "hexing", "hybrid", "incite", "inject", "jacked", "jigsaw", "kayaks", "komodo", "lazuli", "logjam", "maimed", "musket", "nebula", "nuking", "overdo", "oxides", "photon", "probed", "quartz", "quebec", "refute", "regime", "sierra", "swerve", "tenacy", "thymes", "ultima", "utopia", "valved", "viable", "wither", "wrench", "xenons", "xylose", "yanked", "yellow", "zigged", "zodiac" };
+   readonly string Alphabet = "abcdefghijklmnopqrstuvwxyz";
    string MorseVersion = "";
+   string SelectedWord = "";
 
    Coroutine Flashing;
    Coroutine Check;
@@ -41,9 +42,10 @@ public class InfiniteLoop : MonoBehaviour {
 
    void Start () {
       SelectedWord = WordList[Random.Range(0, WordList.Length)];
+      StatusLight.gameObject.SetActive(false);
       for (int i = 0; i < 6; i++) {
          for (int j = 0; j < 26; j++) {
-            if (SelectedWord[i] == alphabet[j]) {
+            if (SelectedWord[i] == Alphabet[j]) {
                MorseVersion += MorseLetters[j];
             }
          }
@@ -56,17 +58,21 @@ public class InfiniteLoop : MonoBehaviour {
    }
 
    void ArrowPress (KMSelectable Arrow) {
+      Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, Arrow.transform);
+      if (moduleSolved) {
+         return;
+      }
       for (int i = 0; i < 12; i++) {
          if (Arrow == Arrows[i] && i < 6) {
             LetterIndexes[i % 6] = (LetterIndexes[i % 6] + 1) % 26;
-            Letters[i % 6].text = alphabet[LetterIndexes[i % 6]].ToString().ToUpper();
+            Letters[i % 6].text = Alphabet[LetterIndexes[i % 6]].ToString().ToUpper();
          }
          else if (Arrow == Arrows[i]) {
             LetterIndexes[i % 6]--;
             if (LetterIndexes[i % 6] < 0) {
                LetterIndexes[i % 6] += 26;
             }
-            Letters[i % 6].text = alphabet[LetterIndexes[i % 6]].ToString().ToUpper();
+            Letters[i % 6].text = Alphabet[LetterIndexes[i % 6]].ToString().ToUpper();
          }
       }
       if (Check != null) {
@@ -86,6 +92,7 @@ public class InfiniteLoop : MonoBehaviour {
          }
          Audio.PlaySoundAtTransform("victory", transform);
          GetComponent<KMBombModule>().HandlePass();
+         moduleSolved = true;
          MorseLight.GetComponent<MeshRenderer>().material = RightWrongColors[0];
       }
       else {
