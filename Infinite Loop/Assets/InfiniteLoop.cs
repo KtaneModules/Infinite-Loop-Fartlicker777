@@ -51,6 +51,7 @@ public class InfiniteLoop : MonoBehaviour {
          }
       }
       Debug.LogFormat("[Infinite Loop #{0}] The selected word is {1}. The morse equivalent is {2}.", moduleId, SelectedWord, MorseVersion);
+      Debug.LogFormat("[Infinite Loop #{0}] The extended version is {1}{1}{1}.", moduleId, MorseVersion);
       for (int i = 0; i < 6; i++) {
          Letters[i].text = "A";
       }
