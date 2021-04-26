@@ -18,13 +18,13 @@ public class InfiniteLoop : MonoBehaviour {
    int[] LetterIndexes = { 0, 0, 0, 0, 0, 0 };
 
    readonly string[] MorseLetters = { ".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--.." };
-   readonly string[] WordList = { "anchor", "axions", "brutal", "bunker", "ceased", "cypher", "demote", "devoid", "ejects", "expend", "fixate", "fondly", "geyser", "guitar", "hexing", "hybrid", "incite", "inject", "jacked", "jigsaw", "kayaks", "komodo", "lazuli", "logjam", "maimed", "musket", "nebula", "nuking", "overdo", "oxides", "photon", "probed", "quartz", "quebec", "refute", "regime", "sierra", "swerve", "tenacy", "thymes", "ultima", "utopia", "valved", "viable", "wither", "wrench", "xenons", "xylose", "yanked", "yellow", "zigged", "zodiac" };
+   readonly string[] WordList = { "anchor", "axions", "brutal", "bunker", "ceased", "cypher", "demote", "devoid", "ejects", "expend", "fixate", "fondly", "geyser", "guitar", "hexing", "hybrid", "incite", "inject", "jacked", "jigsaw", "kayaks", "komodo", "lazuli", "logjam", "maimed", "musket", "nebula", "nuking", "overdo", /*"oxides"*/"oblong", "photon", "probed", "quartz", "quebec", "refute", "regime", "sierra", "swerve", "tenacy", "thymes", "ultima", "utopia", "valved", "viable", "wither", "wrench", "xenons", "xylose", "yanked", "yellow", "zigged", "zodiac" };
    readonly string Alphabet = "abcdefghijklmnopqrstuvwxyz";
    string MorseVersion = "";
    string SelectedWord = "";
 
-   Coroutine Flashing;
    Coroutine Check;
+   Coroutine Flashing;
    Coroutine Solve;
 
    static int moduleIdCounter = 1;
@@ -56,6 +56,45 @@ public class InfiniteLoop : MonoBehaviour {
          Letters[i].text = "A";
       }
       Flashing = StartCoroutine(Flash());
+      /*                                                                                     Checks if two words are identical
+      #pragma warning disable IDE0059 // Unnecessary assignment of a value
+            string Test1 = "";
+      #pragma warning restore IDE0059 // Unnecessary assignment of a value
+            string Test2 = "";
+            for (int i = 0; i < WordList.Length - 1; i++) {
+
+               Test1 = "";
+
+
+               for (int x = 0; x < 6; x++) {
+                  for (int y = 0; y < 26; y++) {
+                     if (WordList[i][x] == Alphabet[y]) {
+                        Test1 += MorseLetters[y];
+                     }
+                  }
+               }
+
+               for (int j = i + 1; j < WordList.Length; j++) {
+                  for (int x = 0; x < 6; x++) {
+                     for (int y = 0; y < 26; y++) {
+                        if (WordList[j][x] == Alphabet[y]) {
+                           Test2 += MorseLetters[y];
+                        }
+                     }
+                  }
+                  string Original = Test2;
+
+                  for (int p = i + 1; p < Original.Length; p++) {
+                     Test2 = Test2[Test2.Length - 1].ToString() + Test2.Remove(Test2.Length - 1);
+                     if (Test2 == Test1) {
+                        Debug.LogFormat("{0} matches {1}", WordList[i], WordList[j]);
+                     }
+                  }
+                  Test2 = "";
+               }
+
+            }
+      */
    }
 
    void ArrowPress (KMSelectable Arrow) {
@@ -173,9 +212,17 @@ public class InfiniteLoop : MonoBehaviour {
          yield break;
       }
       for (int i = 0; i < 6; i++) {
-         while (Letters[i].text != Command[i].ToString().ToUpper()) {
-            Arrows[i].OnInteract();
-            yield return new WaitForSecondsRealtime(.1f);
+         if ("ABCDEFGHIJKLM".Contains(Command[i].ToString().ToUpper())) {
+            while (Letters[i].text != Command[i].ToString().ToUpper()) {
+               Arrows[i].OnInteract();
+               yield return new WaitForSecondsRealtime(.1f);
+            }
+         }
+         else {
+            while (Letters[i].text != Command[i].ToString().ToUpper()) {
+               Arrows[i + 6].OnInteract();
+               yield return new WaitForSecondsRealtime(.1f);
+            }
          }
       }
       if (Command.ToLower() == SelectedWord) {
