@@ -15,7 +15,7 @@ public class InfiniteLoop : MonoBehaviour {
    public GameObject[] Boxes;
    public Material[] RightWrongColors;
 
-   int[] LetterIndexes = { 0, 0, 0, 0, 0, 0 };
+   int[] LetterIndexes = { 0, 0, 0, 0, 0, 0};
 
    readonly string[] MorseLetters = { ".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--.." };
    readonly string[] WordList = { "anchor", "axions", "brutal", "bunker", "ceased", "cypher", "demote", "devoid", "ejects", "expend", "fixate", "fondly", "geyser", "guitar", "hexing", "hybrid", "incite", "inject", "jacked", "jigsaw", "kayaks", "komodo", "lazuli", "logjam", "maimed", "musket", "nebula", "nuking", "overdo", /*"oxides"*/"oblong", "photon", "probed", "quartz", "quebec", "refute", "regime", "sierra", "swerve", "tenacy", "thymes", "ultima", "utopia", "valved", "viable", "wither", "wrench", "xenons", "xylose", "yanked", "yellow", "zigged", "zodiac" };
@@ -50,56 +50,17 @@ public class InfiniteLoop : MonoBehaviour {
             }
          }
       }
-      Debug.LogFormat("[Infinite Loop #{0}] The selected word is {1}. The morse equivalent is {2}.", moduleId, SelectedWord, MorseVersion);
-      Debug.LogFormat("[Infinite Loop #{0}] The extended version is {1}{1}{1}.", moduleId, MorseVersion);
+      Debug.LogFormat("[Infinite Loop #{0}] The selected word is {1}. The morse equivalent is \"{2}\"", moduleId, SelectedWord, MorseVersion);
+      Debug.LogFormat("[Infinite Loop #{0}] The extended version is \"{1}{1}{1}\"", moduleId, MorseVersion);
       for (int i = 0; i < 6; i++) {
          Letters[i].text = "A";
       }
       Flashing = StartCoroutine(Flash());
-      /*                                                                                     Checks if two words are identical
-      #pragma warning disable IDE0059 // Unnecessary assignment of a value
-            string Test1 = "";
-      #pragma warning restore IDE0059 // Unnecessary assignment of a value
-            string Test2 = "";
-            for (int i = 0; i < WordList.Length - 1; i++) {
-
-               Test1 = "";
-
-
-               for (int x = 0; x < 6; x++) {
-                  for (int y = 0; y < 26; y++) {
-                     if (WordList[i][x] == Alphabet[y]) {
-                        Test1 += MorseLetters[y];
-                     }
-                  }
-               }
-
-               for (int j = i + 1; j < WordList.Length; j++) {
-                  for (int x = 0; x < 6; x++) {
-                     for (int y = 0; y < 26; y++) {
-                        if (WordList[j][x] == Alphabet[y]) {
-                           Test2 += MorseLetters[y];
-                        }
-                     }
-                  }
-                  string Original = Test2;
-
-                  for (int p = i + 1; p < Original.Length; p++) {
-                     Test2 = Test2[Test2.Length - 1].ToString() + Test2.Remove(Test2.Length - 1);
-                     if (Test2 == Test1) {
-                        Debug.LogFormat("{0} matches {1}", WordList[i], WordList[j]);
-                     }
-                  }
-                  Test2 = "";
-               }
-
-            }
-      */
    }
 
    void ArrowPress (KMSelectable Arrow) {
       Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, Arrow.transform);
-      if (moduleSolved) {
+      if (moduleSolved || Solve != null) {
          return;
       }
       for (int i = 0; i < 12; i++) {
@@ -170,18 +131,6 @@ public class InfiniteLoop : MonoBehaviour {
       Solve = null;
    }
 
-   /*int Modulo (int Input, int ModuloBy) { Was here when I tried to modulo all in one line, it didn't work for some reason.
-      if (Input < 0) {
-         return Input % ModuloBy;
-      }
-      else {
-         while (Input < 0) {
-            Input += ModuloBy;
-         }
-         return Input;
-      }
-   }*/
-
    IEnumerator Flash () {
       int Index = Random.Range(0, MorseVersion.Length);
       while (true) {
@@ -196,6 +145,46 @@ public class InfiniteLoop : MonoBehaviour {
          MorseLight.GetComponent<MeshRenderer>().material = MorseColors[0];
          yield return new WaitForSecondsRealtime(.3f);
          Index++;
+      }
+   }
+
+   void CheckForDupes () {
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
+      string Test1 = "";
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
+      string Test2 = "";
+      for (int i = 0; i < WordList.Length - 1; i++) {
+
+         Test1 = "";
+
+
+         for (int x = 0; x < 6; x++) {
+            for (int y = 0; y < 26; y++) {
+               if (WordList[i][x] == Alphabet[y]) {
+                  Test1 += MorseLetters[y];
+               }
+            }
+         }
+
+         for (int j = i + 1; j < WordList.Length; j++) {
+            for (int x = 0; x < 6; x++) {
+               for (int y = 0; y < 26; y++) {
+                  if (WordList[j][x] == Alphabet[y]) {
+                     Test2 += MorseLetters[y];
+                  }
+               }
+            }
+            string Original = Test2;
+
+            for (int p = i + 1; p < Original.Length; p++) {
+               Test2 = Test2[Test2.Length - 1].ToString() + Test2.Remove(Test2.Length - 1);
+               if (Test2 == Test1) {
+                  Debug.LogFormat("{0} matches {1}", WordList[i], WordList[j]);
+               }
+            }
+            Test2 = "";
+         }
+
       }
    }
 

@@ -18,6 +18,6 @@ MonoBehaviour:
     a word flashing in morse code without any spaces.\n\nManual can be found at ktane.timwi.de
     or in the manuals folder of the game.\n\nIf there are any bugs, contact Fartlicker777#9169
     on Discord."
-  version: 
+  version: 8
   outputFolder: build
   previewImage: {fileID: 2800000, guid: a726bb0731df21f45a52c7dcb061bf25, type: 3}
