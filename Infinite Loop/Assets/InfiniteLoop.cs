@@ -224,5 +224,6 @@ public class InfiniteLoop : MonoBehaviour {
 
    IEnumerator TwitchHandleForcedSolve () {
       yield return ProcessTwitchCommand(SelectedWord);
+      while (!moduleSolved) yield return true;
    }
 }
